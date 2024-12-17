@@ -1,7 +1,7 @@
 {
   "name": "ts-template",
   "description": "ts-template for UbiquityOS plugins.",
-  "url": "https://optional-url-to-the-worker.workers.dev",
+  "homepage_url": "https://optional-url-to-the-worker.workers.dev",
   "ubiquity:listeners": [
     "issue_comment.created"
   ],
