@@ -46,9 +46,12 @@ jobs:
           secrets: |
             SUPABASE_URL
             SUPABASE_KEY
+            ${{ secrets.KERNEL_PUBLIC_KEY && secrets.KERNEL_PUBLIC_KEY != '' && 'KERNEL_PUBLIC_KEY' || '' }}
+
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          KERNEL_PUBLIC_KEY: ${{ secrets.KERNEL_PUBLIC_KEY }}
 
       - name: Update manifest.json worker url
         uses: actions/github-script@v7
@@ -60,11 +63,94 @@ jobs:
             const manifestPath = path.resolve("${{ github.workspace }}", './manifest.json');
             const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
-            manifest["url"] = "${{ steps.wrangler_deploy.outputs.deployment-url }}";
+            manifest["homepage_url"] = "${{ steps.wrangler_deploy.outputs.deployment-url }}";
 
             const updatedManifest = JSON.stringify(manifest, null, 2);
             fs.writeFileSync(manifestPath, updatedManifest);
             console.log('Updated manifest:', updatedManifest);
+
+      - name: Get GitHub App token
+        if: env.APP_ID != '' && env.APP_PRIVATE_KEY != ''
+        uses: tibdex/github-app-token@v1.7.0
+        id: get_installation_token
+        with:
+          app_id: ${{ env.APP_ID }}
+          private_key: ${{ env.APP_PRIVATE_KEY }}
+
+      - name: Update manifest.json
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ steps.get_installation_token.outputs.token || github.token }}
+        run: |
+          git add "manifest.json"
+          echo "Changed files:"
+          echo "$(git diff-index --cached --name-only HEAD)"
+          if [ -n "$(git diff-index --cached --name-only HEAD)" ]; then
+            node -e "
+              const fs = require('fs');
+              const path = require('path');
+              const github = require('@actions/github');
+              const manifestPath = path.relative('.', 'manifest.json');
+
+              async function pushChanges() {
+                const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+
+                const context = github.context;
+                const owner = context.repo.owner;
+                const repo = context.repo.repo;
+                const ref = 'heads/${{ github.ref_name }}';
+
+                try {
+                  const currentCommit = await octokit.rest.git.getRef({
+                    owner,
+                    repo,
+                    ref
+                  });
+
+                  console.log('Adding file:', manifestPath);
+                  const treeEntries = [
+                    {
+                      path: manifestPath,
+                      mode: '100644',
+                      type: 'blob',
+                      content: fs.readFileSync(manifestPath, 'utf8'),
+                    }
+                  ];
+                  const newTree = await octokit.rest.git.createTree({
+                    owner,
+                    repo,
+                    base_tree: currentCommit.data.object.sha,
+                    tree: treeEntries,
+                  });
+
+                  const newCommit = await octokit.rest.git.createCommit({
+                    owner,
+                    repo,
+                    message: 'chore: updated manifest.json worker URL',
+                    tree: newTree.data.sha,
+                    parents: [currentCommit.data.object.sha]
+                  });
+
+                  await octokit.rest.git.updateRef({
+                    owner,
+                    repo,
+                    ref,
+                    sha: newCommit.data.sha,
+                    force: true
+                  });
+
+                  console.log('Changes pushed successfully');
+                } catch (error) {
+                  console.error('Error pushing changes:', error);
+                  process.exit(1);
+                }
+              }
+
+              pushChanges();
+            "
+          else
+            echo "No changes to commit"
+          fi
 
       - name: Write Deployment URL to Summary
         run: |
