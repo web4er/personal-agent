@@ -1,22 +1,19 @@
 import { Octokit } from "@octokit/rest";
-import { returnDataToKernel } from "./helpers/validator";
-import { Env, PluginInputs } from "./types";
-import { Context } from "./types";
-import { isIssueCommentEvent } from "./types/typeguards";
-import { helloWorld } from "./handlers/hello-world";
 import { LogLevel, Logs } from "@ubiquity-dao/ubiquibot-logger";
+import { helloWorld } from "./handlers/hello-world";
+import { Context, Env, PluginInputs } from "./types";
 
 /**
  * The main plugin function. Split for easier testing.
  */
 export async function runPlugin(context: Context) {
-  const { logger, eventName } = context;
+  //const { logger, eventName } = context;
 
-  if (isIssueCommentEvent(context)) {
-    return await helloWorld(context);
-  }
+  //if (isIssueCommentEvent(context)) {
+  return await helloWorld(context);
+  //}
 
-  logger.error(`Unsupported event: ${eventName}`);
+  //logger.error(`Unsupported event: ${eventName}`);
 }
 
 /**
@@ -46,5 +43,5 @@ export async function plugin(inputs: PluginInputs, env: Env) {
    */
 
   await runPlugin(context);
-  return returnDataToKernel(process.env.GITHUB_TOKEN, inputs.stateId, {});
+  //return returnDataToKernel(process.env.GITHUB_TOKEN, inputs.stateId, {});
 }

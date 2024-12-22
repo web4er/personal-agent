@@ -11,20 +11,8 @@
     }
   },
   "configuration": {
-    "default": {
-      "configurableResponse": "Hello, world!"
-    },
+    "default": {},
     "type": "object",
-    "properties": {
-      "configurableResponse": {
-        "type": "string"
-      },
-      "customStringsUrl": {
-        "type": "string"
-      }
-    },
-    "required": [
-      "configurableResponse"
-    ]
+    "properties": {}
   }
 }

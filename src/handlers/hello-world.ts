@@ -1,3 +1,4 @@
+import { Octokit } from "@octokit/rest";
 import { Context } from "../types";
 
 /**
@@ -11,43 +12,45 @@ import { Context } from "../types";
  * Logger examples are provided to show how to log different types of data.
  */
 export async function helloWorld(context: Context) {
-  const {
-    logger,
-    payload,
-    octokit,
-    config: { configurableResponse, customStringsUrl },
-  } = context;
+  const { logger, payload } = context;
 
   const sender = payload.comment.user?.login;
   const repo = payload.repository.name;
   const issueNumber = payload.issue.number;
   const owner = payload.repository.owner.login;
-  const body = payload.comment.body;
+  //const body = payload.comment.body;
 
-  if (!body.match(/hello/i)) {
-    logger.error(`Invalid use of slash command, use "/hello".`, { body });
-    return;
-  }
+  // if (!body.match(/hello/i)) {
+  //   logger.error(`Invalid use of slash command, use "/hello".`, { body });
+  //   return;
+  // }
 
   logger.info("Hello, world!");
   logger.debug(`Executing helloWorld:`, { sender, repo, issueNumber, owner });
 
   try {
-    await octokit.issues.createComment({
+    // await octokit.issues.createComment({
+    //   owner: payload.repository.owner.login,
+    //   repo: payload.repository.name,
+    //   issue_number: payload.issue.number,
+    //   body: "Coming from personal agent",
+    // });
+
+    // const octokitGithubToken = new Octokit({ auth: process.env.GITHUB_TOKEN });
+    // await octokitGithubToken.issues.createComment({
+    //   owner: payload.repository.owner.login,
+    //   repo: payload.repository.name,
+    //   issue_number: payload.issue.number,
+    //   body: "Coming from personal agent 2",
+    // });
+
+    const octokitGuest = new Octokit();
+    await octokitGuest.issues.createComment({
       owner: payload.repository.owner.login,
       repo: payload.repository.name,
       issue_number: payload.issue.number,
-      body: configurableResponse,
+      body: "Coming from personal agent 3",
     });
-    if (customStringsUrl) {
-      const response = await fetch(customStringsUrl).then((value) => value.json());
-      await octokit.issues.createComment({
-        owner: payload.repository.owner.login,
-        repo: payload.repository.name,
-        issue_number: payload.issue.number,
-        body: response.greeting,
-      });
-    }
   } catch (error) {
     /**
      * logger.fatal should not be used in 9/10 cases. Use logger.error instead.
