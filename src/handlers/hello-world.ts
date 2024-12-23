@@ -1,4 +1,3 @@
-import { Octokit } from "@octokit/rest";
 import { Context } from "../types";
 
 /**
@@ -12,13 +11,13 @@ import { Context } from "../types";
  * Logger examples are provided to show how to log different types of data.
  */
 export async function helloWorld(context: Context) {
-  const { logger, payload } = context;
+  const { logger, payload, octokit } = context;
 
   const sender = payload.comment.user?.login;
   const repo = payload.repository.name;
   const issueNumber = payload.issue.number;
   const owner = payload.repository.owner.login;
-  //const body = payload.comment.body;
+  const body = payload.comment.body;
 
   // if (!body.match(/hello/i)) {
   //   logger.error(`Invalid use of slash command, use "/hello".`, { body });
@@ -28,28 +27,21 @@ export async function helloWorld(context: Context) {
   logger.info("Hello, world!");
   logger.debug(`Executing helloWorld:`, { sender, repo, issueNumber, owner });
 
+  const targetUser = body.match(/^\/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/i);
+  if (!targetUser) {
+    logger.error(`Missing target username from comment: ${body}`);
+    return;
+  }
+  const personalAgentOwner = targetUser[0].replace("/@", "");
+
+  const reply = [`#### Reply from ${personalAgentOwner}/personal-agent\n`, "```\n", `${body}`, "\n```\n", "We will figure this out soon."].join("");
+
   try {
-    // await octokit.issues.createComment({
-    //   owner: payload.repository.owner.login,
-    //   repo: payload.repository.name,
-    //   issue_number: payload.issue.number,
-    //   body: "Coming from personal agent",
-    // });
-
-    // const octokitGithubToken = new Octokit({ auth: process.env.GITHUB_TOKEN });
-    // await octokitGithubToken.issues.createComment({
-    //   owner: payload.repository.owner.login,
-    //   repo: payload.repository.name,
-    //   issue_number: payload.issue.number,
-    //   body: "Coming from personal agent 2",
-    // });
-
-    const octokitGuest = new Octokit();
-    await octokitGuest.issues.createComment({
+    await octokit.issues.createComment({
       owner: payload.repository.owner.login,
       repo: payload.repository.name,
       issue_number: payload.issue.number,
-      body: "Coming from personal agent 3",
+      body: reply,
     });
   } catch (error) {
     /**

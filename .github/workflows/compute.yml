@@ -15,16 +15,12 @@ on:
         description: "Auth Token"
       ref:
         description: "Ref"
-      signature:
-        description: "The kernel signature"
 
 jobs:
   compute:
     name: "Personal Agent Plugin"
     runs-on: ubuntu-latest
     permissions: write-all
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -40,5 +36,3 @@ jobs:
       - name: execute directive
         run: npx tsx ./src/main.ts
         id: plugin-personal-agent
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

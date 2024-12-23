@@ -2,18 +2,19 @@ import { Octokit } from "@octokit/rest";
 import { LogLevel, Logs } from "@ubiquity-dao/ubiquibot-logger";
 import { helloWorld } from "./handlers/hello-world";
 import { Context, Env, PluginInputs } from "./types";
+import { isIssueCommentEvent } from "./types/typeguards";
 
 /**
  * The main plugin function. Split for easier testing.
  */
 export async function runPlugin(context: Context) {
-  //const { logger, eventName } = context;
+  const { logger, eventName } = context;
 
-  //if (isIssueCommentEvent(context)) {
-  return await helloWorld(context);
-  //}
+  if (isIssueCommentEvent(context)) {
+    return await helloWorld(context);
+  }
 
-  //logger.error(`Unsupported event: ${eventName}`);
+  logger.error(`Unsupported event: ${eventName}`);
 }
 
 /**
