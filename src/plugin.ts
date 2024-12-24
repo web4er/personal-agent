@@ -44,5 +44,4 @@ export async function plugin(inputs: PluginInputs, env: Env) {
    */
 
   await runPlugin(context);
-  //return returnDataToKernel(process.env.GITHUB_TOKEN, inputs.stateId, {});
 }
