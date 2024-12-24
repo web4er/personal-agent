@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest";
 import { LogLevel, Logs } from "@ubiquity-dao/ubiquibot-logger";
-import { helloWorld } from "./handlers/hello-world";
+import { decideHandler as decideHandler } from "./handlers/decide-handler";
 import { Context, Env, PluginInputs } from "./types";
 import { isIssueCommentEvent } from "./types/typeguards";
 
@@ -11,7 +11,7 @@ export async function runPlugin(context: Context) {
   const { logger, eventName } = context;
 
   if (isIssueCommentEvent(context)) {
-    return await helloWorld(context);
+    return await decideHandler(context);
   }
 
   logger.error(`Unsupported event: ${eventName}`);
