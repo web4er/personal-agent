@@ -22,8 +22,6 @@ export async function decideHandler(context: Context) {
 
   logger.debug(`Executing decideHandler:`, { sender, repo, issueNumber, owner });
 
-  logger.error(`Invalid command.`, { body });
-
   const targetUser = body.match(/^\/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/i);
   if (!targetUser) {
     logger.error(`Missing target username from comment: ${body}`);
@@ -31,13 +29,15 @@ export async function decideHandler(context: Context) {
   }
   const personalAgentOwner = targetUser[0].replace("/@", "");
 
+  logger.info(`Comment received:`, { owner, personalAgentOwner, comment: body });
+
   let reply;
 
-  if (!body.match(/say\s+hello/i)) {
+  if (body.match(/^\/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))\s+say\s+hello/i)) {
     reply = sayHello();
-    return;
   } else {
     reply = "No handler found in the personal agent for your command.";
+    logger.error(`Invalid command.`, { body });
   }
 
   const replyWithQuote = [`#### Reply from ${personalAgentOwner}/personal-agent\n`, "```\n", `${body}`, "\n```\n", reply].join("");
@@ -64,6 +64,6 @@ export async function decideHandler(context: Context) {
     }
   }
 
-  logger.ok(`Successfully created comment!`);
+  logger.ok(`Comment created: ${reply}`);
   logger.verbose(`Exiting decideHandler`);
 }
