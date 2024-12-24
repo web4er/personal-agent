@@ -1,7 +1,9 @@
 {
   "name": "Peronal Agent",
   "description": "Personal agent to repond to commands from UbiquityOS in user's Github actions",
-  "ubiquity:listeners": ["issue_comment.created"],
+  "ubiquity:listeners": [
+    "issue_comment.created"
+  ],
   "configuration": {
     "default": {
       "configurableResponse": "Hello, world!"
@@ -15,6 +17,8 @@
         "type": "string"
       }
     },
-    "required": ["configurableResponse"]
+    "required": [
+      "configurableResponse"
+    ]
   }
 }
