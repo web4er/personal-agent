@@ -1,6 +1,6 @@
 # `@ubiquity-os/personal-agent`
 
-The Personal Agent is a [UbiquityOS](https://github.com/apps/ubiquity-os) plugin designed to perform actions in the context of user's Github account. It is forked, configured, and hosted by a Github user. Any issue comment beginning with `/@username` is forwarded to this plugin for processing. Find below a list features offered by the plugin:
+The Personal Agent is a [UbiquityOS](https://github.com/apps/ubiquity-os) plugin designed to run actions in user's Github account. It is forked, configured, and hosted by a Github user. Any issue comment beginning with `/@username` is forwarded to this plugin for processing. Find below a list features offered by the plugin:
 
 - `/@username say hello`
   The plugin should respond with a `Hello`.
