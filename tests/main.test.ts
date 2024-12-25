@@ -12,7 +12,7 @@ import { createComment, setupTests } from "./__mocks__/helpers";
 import { server } from "./__mocks__/node";
 import { STRINGS } from "./__mocks__/strings";
 
-dotenv.config({ path: "tests/.env.test" });
+dotenv.config();
 jest.requireActual("@octokit/rest");
 const octokit = new Octokit();
 const commentCreateEvent = "issue_comment.created";
