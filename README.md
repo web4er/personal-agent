@@ -15,9 +15,9 @@ Communication between [UbiquityOS](https://github.com/apps/ubiquity-os) and the 
 
 - Fork this repository with exactly the same name `personal-agent` under your personal or your organization account.
 
-- Generate a Github fine-grained Personal Access Token PAT with access to this repository only. Required repository permission:
+- Generate a Github fine-grained Personal Access Token PAT with access to this repository only. Required repository permissions:
 
-  - Actions: read & write
+  - Actions: Read & write
   - Metadata: Read-only
 
 - Encrypt your PAT with UbiquityOS's `X25519_PUBLIC_KEY` using [keygen.ubq.fi](https://keygen.ubq.fi/).
