@@ -58,7 +58,7 @@ describe("Personal Agent Plugin tests", () => {
   });
 
   it("Should reply with err if wrong command", async () => {
-    const { context, errorSpy, okSpy, infoSpy, verboseSpy } = createContext("Hello, world!", `/@${STRINGS.personalAgentOwner} wrong command`);
+    const { context, errorSpy, okSpy, infoSpy, verboseSpy } = createContext(`/@${STRINGS.personalAgentOwner} wrong command`);
 
     expect(context.eventName).toBe(commentCreateEvent);
 
@@ -85,7 +85,6 @@ describe("Personal Agent Plugin tests", () => {
  * Refactor according to your needs.
  */
 function createContext(
-  configurableResponse: string = "Hello, world!", // we pass the plugin configurable items here
   commentBody: string = STRINGS.commentBody,
   repoId: number = 1,
   payloadSenderId: number = 1,
@@ -99,7 +98,7 @@ function createContext(
   createComment(commentBody, commentId); // create it first then pull it from the DB and feed it to _createContext
   const comment = db.issueComments.findFirst({ where: { id: { equals: commentId } } }) as unknown as Context["payload"]["comment"];
 
-  const context = createContextInner(repo, sender, issue1, comment, configurableResponse);
+  const context = createContextInner(repo, sender, issue1, comment);
   const infoSpy = jest.spyOn(context.logger, "info");
   const errorSpy = jest.spyOn(context.logger, "error");
   const debugSpy = jest.spyOn(context.logger, "debug");
@@ -127,8 +126,7 @@ function createContextInner(
   repo: Context["payload"]["repository"],
   sender: Context["payload"]["sender"],
   issue: Context["payload"]["issue"],
-  comment: Context["payload"]["comment"],
-  configurableResponse: string
+  comment: Context["payload"]["comment"]
 ): Context {
   return {
     eventName: "issue_comment.created",
@@ -142,9 +140,7 @@ function createContextInner(
       organization: { login: STRINGS.USER } as Context["payload"]["organization"],
     } as Context["payload"],
     logger: new Logs("debug"),
-    config: {
-      configurableResponse,
-    },
+    config: {},
     env: {} as Env,
     octokit: octokit,
   };

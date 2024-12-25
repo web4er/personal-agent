@@ -3,18 +3,9 @@
   "description": "Personal agent processes commands from UbiquityOS in user's Github actions",
   "ubiquity:listeners": ["issue_comment.created"],
   "configuration": {
-    "default": {
-      "configurableResponse": "Hello, world!"
-    },
+    "default": {},
     "type": "object",
-    "properties": {
-      "configurableResponse": {
-        "type": "string"
-      },
-      "customStringsUrl": {
-        "type": "string"
-      }
-    },
-    "required": ["configurableResponse"]
+    "properties": {},
+    "required": []
   }
 }
