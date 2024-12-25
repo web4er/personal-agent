@@ -9,7 +9,7 @@ More features coming soon...
 
 Communication between [UbiquityOS](https://github.com/apps/ubiquity-os) and the [Personal Agent](https://github.com/EresDevOrg/personal-agent) plugin is handled by [Personal Agent Bridge](https://github.com/EresDevOrg/personal-agent-bridge).
 
-## Configuration
+## How to set up?
 
 - Make sure the Personal Agent Bridge is also configured. You can read its [documentation](https://github.com/EresDevOrg/personal-agent-bridge/blob/plugin-pa-bridge/README.md).
 
