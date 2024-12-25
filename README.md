@@ -1,11 +1,13 @@
 # `@ubiquity-os/personal-agent`
 
-The Personal Agent is a [UbiquityOS](https://github.com/apps/ubiquity-os) plugin designed to perform actions in the context of user's Github account. It is forked, configured, and hosted by a Github user. Any issue comment beginning with `/@username` is forwarded to user's personal-agent for processing. Find below a list features offered by the plugin:
+The Personal Agent is a [UbiquityOS](https://github.com/apps/ubiquity-os) plugin designed to perform actions in the context of user's Github account. It is forked, configured, and hosted by a Github user. Any issue comment beginning with `/@username` is forwarded to this plugin for processing. Find below a list features offered by the plugin:
 
 - `/@username say hello`
-  The plugin responds to such command with a `Hello`.
+  The plugin should respond with a `Hello`.
 
-Communication between [UbiquityOS](https://github.com/apps/ubiquity-os) and the [Personal Agent plugin](https://github.com/EresDevOrg/personal-agent) is handled by [Personal Agent Bridge](https://github.com/EresDevOrg/personal-agent-bridge).
+More features coming soon...
+
+Communication between [UbiquityOS](https://github.com/apps/ubiquity-os) and the [Personal Agent](https://github.com/EresDevOrg/personal-agent) plugin is handled by [Personal Agent Bridge](https://github.com/EresDevOrg/personal-agent-bridge).
 
 ## Configuration
 
@@ -13,9 +15,12 @@ Communication between [UbiquityOS](https://github.com/apps/ubiquity-os) and the 
 
 - Fork this repository with exactly the same name `personal-agent` under your personal or your organization account.
 
-- Generate a Github fine-grained Personal Access Token PAT with access to this repository only. Required permission: `Actions: read & write`, `Metadata: Read-only`
+- Generate a Github fine-grained Personal Access Token PAT with access to this repository only. Required repository permission:
 
-- Encrypt your PAT with UbiquityOS X25519_PUBLIC_KEY using [keygen.ubq.fi](https://keygen.ubq.fi/).
+  - Actions: read & write
+  - Metadata: Read-only
+
+- Encrypt your PAT with UbiquityOS's `X25519_PUBLIC_KEY` using [keygen.ubq.fi](https://keygen.ubq.fi/).
 
 - Add the encrypted PAT in your fork's `.github/personal-agent.config.yml` file.
 
@@ -27,16 +32,13 @@ Go to any repository issue where UbiquityOS is installed. Comment as below:
 /@username say hello`
 ```
 
-Do not forget to replace `username` with username where the plugin has been forked. You should get a reply from the personal-agent.
+Replace `username` with the username where the plugin has been forked. You should get a reply from the personal-agent of the user.
 
 ## Troubleshooting
 
-In most cases you should also receive error message if there is a problem. If you do not get any response make sure to check the following:
+In most cases you should also receive an error message if there is a problem. If you do not get any response or want to look into the details of an error, check Personal Agent Bridge and Personal Agent fork's actions logs.
 
-- You are using the correct instance of UbiquityOS and it is running.
-- Check Personal Agent Bridge and Personal Agent fork's actions logs.
-
-### Get started with development
+## Get started with development
 
 - Install dependencies
 
