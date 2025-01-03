@@ -11,7 +11,7 @@ import { sayHello } from "./say-hello";
  *
  * Logger examples are provided to show how to log different types of data.
  */
-export async function decideHandler(context: Context) {
+export async function delegate(context: Context) {
   const { logger, payload, octokit } = context;
 
   const sender = payload.comment.user?.login;
