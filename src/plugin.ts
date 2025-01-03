@@ -21,6 +21,11 @@ export async function runPlugin(context: Context) {
  * How a worker executes the plugin.
  */
 export async function plugin(inputs: PluginInputs, env: Env) {
+  if (!env.PERSONAL_AGENT_PAT) {
+    console.log("Missing PERSONAL_AGENT_PAT");
+  } else {
+    console.log("Received PERSONAL_AGENT_PAT", env.PERSONAL_AGENT_PAT.length);
+  }
   const octokit = new Octokit({ auth: env.PERSONAL_AGENT_PAT });
 
   const context: Context = {
