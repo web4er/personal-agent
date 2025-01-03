@@ -40,7 +40,7 @@ export async function delegate(context: Context) {
     logger.error(`Invalid command.`, { body });
   }
 
-  const replyWithQuote = [`#### Reply from ${personalAgentOwner}/personal-agent\n`, "```\n", `${body}`, "\n```\n", reply].join("");
+  const replyWithQuote = ["```\n", `${body}`, "\n```\n", reply].join("");
 
   try {
     await octokit.issues.createComment({
