@@ -21,7 +21,7 @@ export async function runPlugin(context: Context) {
  * How a worker executes the plugin.
  */
 export async function plugin(inputs: PluginInputs, env: Env) {
-  const octokit = new Octokit({ auth: inputs.authToken });
+  const octokit = new Octokit({ auth: env.PERSONAL_AGENT_PAT });
 
   const context: Context = {
     eventName: inputs.eventName,
