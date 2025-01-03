@@ -20,9 +20,13 @@ Communication between [UbiquityOS](https://github.com/apps/ubiquity-os) and the 
   - Actions: Read & write
   - Metadata: Read-only
 
-- Encrypt your PAT with UbiquityOS's `X25519_PUBLIC_KEY` using [keygen.ubq.fi](https://keygen.ubq.fi/).
+- Encrypt your fine-grained PAT with UbiquityOS's `X25519_PUBLIC_KEY` using [keygen.ubq.fi](https://keygen.ubq.fi/).
 
-- Add the encrypted PAT in your fork's `.github/personal-agent.config.yml` file.
+- Add the encrypted fine-grained PAT in your fork's `.github/personal-agent.config.yml` file.
+
+- Create a Personal Access Token (classic) with following permissions
+  - public_repo
+- Add the Personal Access Token (classic) as a repository secret of Personal Agent with name: `PERSONAL_AGENT_PAT_CLASSIC`
 
 ## Usage
 
