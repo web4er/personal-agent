@@ -37,4 +37,4 @@ jobs:
         run: npx tsx ./src/main.ts
         id: plugin-personal-agent
         env:
-          PERSONAL_AGENT_PAT: ${{ secrets.PERSONAL_AGENT_PAT_CLASSIC }}
+          PERSONAL_AGENT_PAT_CLASSIC: ${{ secrets.PERSONAL_AGENT_PAT_CLASSIC }}
