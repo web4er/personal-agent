@@ -71,7 +71,10 @@ describe("Personal Agent Plugin tests", () => {
       owner: STRINGS.USER,
       comment: `/@${STRINGS.personalAgentOwner} wrong command`,
     });
-    expect(okSpy).toHaveBeenNthCalledWith(1, `Comment created: No handler found in the personal agent for your command.`);
+    expect(okSpy).toHaveBeenNthCalledWith(
+      1,
+      `Comment created: I could not understand your comment to give you a quick response. I will get back to you later.`
+    );
     expect(verboseSpy).toHaveBeenNthCalledWith(1, "Exiting decideHandler");
   });
 });

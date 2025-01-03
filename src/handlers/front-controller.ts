@@ -36,7 +36,7 @@ export async function delegate(context: Context) {
   if (body.match(/^\/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))\s+say\s+hello/i)) {
     reply = sayHello();
   } else {
-    reply = "No handler found in the personal agent for your command.";
+    reply = "I could not understand your comment to give you a quick response. I will get back to you later.";
     logger.error(`Invalid command.`, { body });
   }
 
