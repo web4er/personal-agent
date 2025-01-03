@@ -22,7 +22,6 @@ export async function run() {
     eventName: payload.eventName,
     eventPayload: JSON.parse(payload.eventPayload),
     settings,
-    authToken: payload.authToken,
     ref: payload.ref,
   };
 
