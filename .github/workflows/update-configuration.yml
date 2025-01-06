@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: ubiquity-os/action-deploy-plugin@main
         with:
-          pluginEntry: "${{ github.workspace }}/src/run.ts"
+          pluginEntry: "${{ github.workspace }}/src/main.ts"
         env:
           APP_ID: ${{ secrets.APP_ID }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
