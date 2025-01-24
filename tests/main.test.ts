@@ -58,18 +58,18 @@ describe("Personal Agent Plugin tests", () => {
   });
 
   it("Should reply with err if wrong command", async () => {
-    const { context, errorSpy, okSpy, infoSpy, verboseSpy } = createContext(`/@${STRINGS.personalAgentOwner} wrong command`);
+    const { context, errorSpy, okSpy, infoSpy, verboseSpy } = createContext(`@${STRINGS.personalAgentOwner} wrong command`);
 
     expect(context.eventName).toBe(commentCreateEvent);
 
     await runPlugin(context);
 
-    expect(errorSpy).toHaveBeenCalledWith("Invalid command.", { body: "/@PersonalAgentOwner wrong command", caller: "_Logs.<anonymous>" });
+    expect(errorSpy).toHaveBeenCalledWith("Invalid command.", { body: "@PersonalAgentOwner wrong command", caller: "_Logs.<anonymous>" });
     expect(infoSpy).toHaveBeenNthCalledWith(1, `Comment received:`, {
       caller: STRINGS.CALLER_LOGS_ANON,
       personalAgentOwner: STRINGS.personalAgentOwner,
       owner: STRINGS.USER,
-      comment: `/@${STRINGS.personalAgentOwner} wrong command`,
+      comment: `@${STRINGS.personalAgentOwner} wrong command`,
     });
     expect(okSpy).toHaveBeenNthCalledWith(
       1,

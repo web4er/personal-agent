@@ -27,7 +27,7 @@ export async function delegate(context: Context) {
     logger.error(`Missing target username from comment: ${body}`);
     return;
   }
-  const personalAgentOwner = targetUser[0].replace("/@", "");
+  const personalAgentOwner = targetUser[0].replace("@", "");
 
   logger.info(`Comment received:`, { owner, personalAgentOwner, comment: body });
 
