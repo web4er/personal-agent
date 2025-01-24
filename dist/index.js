@@ -31905,7 +31905,7 @@
             r.error(`Missing target username from comment: ${u}`);
             return;
           }
-          const g = l[0].replace("/@", "");
+          const g = l[0].replace("@", "");
           r.info(`Comment received:`, { owner: c, personalAgentOwner: g, comment: u });
           let d;
           if (u.match(/^\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))\s+say\s+hello$/i)) {
