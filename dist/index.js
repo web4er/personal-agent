@@ -23881,23 +23881,30 @@
       const { isUint8Array: B, isArrayBuffer: y } = r(8253);
       const { File: b } = r(3041);
       const { parseMIMEType: w, serializeAMimeType: T } = r(4322);
-      let R = globalThis.ReadableStream;
-      const D = I ?? b;
-      const F = new TextEncoder();
-      const k = new TextDecoder();
+      let R;
+      try {
+        const e = r(7598);
+        R = (t) => e.randomInt(0, t);
+      } catch {
+        R = (e) => Math.floor(Math.random(e));
+      }
+      let D = globalThis.ReadableStream;
+      const F = I ?? b;
+      const k = new TextEncoder();
+      const S = new TextDecoder();
       function extractBody(e, t = false) {
-        if (!R) {
-          R = r(3774).ReadableStream;
+        if (!D) {
+          D = r(3774).ReadableStream;
         }
         let s = null;
-        if (e instanceof R) {
+        if (e instanceof D) {
           s = e;
         } else if (A(e)) {
           s = e.stream();
         } else {
-          s = new R({
+          s = new D({
             async pull(e) {
-              e.enqueue(typeof u === "string" ? F.encode(u) : u);
+              e.enqueue(typeof u === "string" ? k.encode(u) : u);
               queueMicrotask(() => a(e));
             },
             start() {},
@@ -23920,7 +23927,7 @@
         } else if (ArrayBuffer.isView(e)) {
           u = new Uint8Array(e.buffer.slice(e.byteOffset, e.byteOffset + e.byteLength));
         } else if (o.isFormDataLike(e)) {
-          const t = `----formdata-undici-0${`${Math.floor(Math.random() * 1e11)}`.padStart(11, "0")}`;
+          const t = `----formdata-undici-0${`${R(1e11)}`.padStart(11, "0")}`;
           const r = `--${t}\r\nContent-Disposition: form-data`;
           /*! formdata-polyfill. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */ const escape = (e) =>
             e.replace(/\n/g, "%0A").replace(/\r/g, "%0D").replace(/"/g, "%22");
@@ -23931,11 +23938,11 @@
           let n = false;
           for (const [t, A] of e) {
             if (typeof A === "string") {
-              const e = F.encode(r + `; name="${escape(normalizeLinefeeds(t))}"` + `\r\n\r\n${normalizeLinefeeds(A)}\r\n`);
+              const e = k.encode(r + `; name="${escape(normalizeLinefeeds(t))}"` + `\r\n\r\n${normalizeLinefeeds(A)}\r\n`);
               s.push(e);
               l += e.byteLength;
             } else {
-              const e = F.encode(
+              const e = k.encode(
                 `${r}; name="${escape(normalizeLinefeeds(t))}"` +
                   (A.name ? `; filename="${escape(A.name)}"` : "") +
                   "\r\n" +
@@ -23949,7 +23956,7 @@
               }
             }
           }
-          const A = F.encode(`--${t}--`);
+          const A = k.encode(`--${t}--`);
           s.push(A);
           l += A.byteLength;
           if (n) {
@@ -23979,14 +23986,14 @@
           if (o.isDisturbed(e) || e.locked) {
             throw new TypeError("Response body object should not be disturbed or locked");
           }
-          s = e instanceof R ? e : n(e);
+          s = e instanceof D ? e : n(e);
         }
         if (typeof u === "string" || o.isBuffer(u)) {
           l = Buffer.byteLength(u);
         }
         if (c != null) {
           let t;
-          s = new R({
+          s = new D({
             async start() {
               t = c(e)[Symbol.asyncIterator]();
             },
@@ -24013,10 +24020,10 @@
         return [d, g];
       }
       function safelyExtractBody(e, t = false) {
-        if (!R) {
-          R = r(3774).ReadableStream;
+        if (!D) {
+          D = r(3774).ReadableStream;
         }
-        if (e instanceof R) {
+        if (e instanceof D) {
           m(!o.isDisturbed(e), "The body has already been consumed.");
           m(!e.locked, "The stream is locked.");
         }
@@ -24106,14 +24113,14 @@
                   });
                   r.on("end", () => {
                     A.push(Buffer.from(o, "base64"));
-                    t.append(e, new D(A, s, { type: n }));
+                    t.append(e, new F(A, s, { type: n }));
                   });
                 } else {
                   r.on("data", (e) => {
                     A.push(e);
                   });
                   r.on("end", () => {
-                    t.append(e, new D(A, s, { type: n }));
+                    t.append(e, new F(A, s, { type: n }));
                   });
                 }
               });
@@ -24190,7 +24197,7 @@
         if (e[0] === 239 && e[1] === 187 && e[2] === 191) {
           e = e.subarray(3);
         }
-        const t = k.decode(e);
+        const t = S.decode(e);
         return t;
       }
       function parseJSONFromBytes(e) {
@@ -31893,7 +31900,7 @@
           const c = s.repository.owner.login;
           const u = s.comment.body;
           r.debug(`Executing decideHandler:`, { sender: A, repo: i, issueNumber: a, owner: c });
-          const l = u.match(/^\/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/i);
+          const l = u.match(/^\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))/i);
           if (!l) {
             r.error(`Missing target username from comment: ${u}`);
             return;
@@ -31901,7 +31908,7 @@
           const g = l[0].replace("/@", "");
           r.info(`Comment received:`, { owner: c, personalAgentOwner: g, comment: u });
           let d;
-          if (u.match(/^\/\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))\s+say\s+hello/i)) {
+          if (u.match(/^\B@([a-z0-9](?:-(?=[a-z0-9])|[a-z0-9]){0,38}(?<=[a-z0-9]))\s+say\s+hello$/i)) {
             d = (0, o.sayHello)();
           } else {
             d = "I could not understand your comment to give you a quick response. I will get back to you later.";
@@ -32198,6 +32205,10 @@
     9278: (e) => {
       "use strict";
       e.exports = require("net");
+    },
+    7598: (e) => {
+      "use strict";
+      e.exports = require("node:crypto");
     },
     8474: (e) => {
       "use strict";
